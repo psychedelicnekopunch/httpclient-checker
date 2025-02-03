@@ -1,0 +1,38 @@
+
+services:
+    httpclient-checker-app:
+        container_name: httpclient_checker
+        depends_on:
+            - httpclient-checker-go
+        image: nginx:1.27.2
+        volumes:
+            - ./app:/var/www/html
+            - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+        ports:
+            - 8888:80
+        tty: true
+        working_dir: /var/www/html
+        networks:
+            - httpclient-checker-network
+    httpclient-checker-go:
+        build:
+            context: .
+            dockerfile: ./go/Dockerfile
+        volumes:
+            - ./app:/var/www/html
+        working_dir: /var/www/html
+        networks:
+            - httpclient-checker-network
+    # httpclient-checker-nginx-proxy:
+    #     image: jwilder/nginx-proxy
+    #     ports:
+    #         - 80:80
+    #     volumes:
+    #         - /var/run/docker.sock:/tmp/docker.sock:ro
+    #     networks:
+    #         - httpclient-checker-network
+
+
+networks:
+    httpclient-checker-network:
+        name: httpclient_checker_network
