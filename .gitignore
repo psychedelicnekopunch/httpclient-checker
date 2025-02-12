@@ -1,5 +1,8 @@
 .DS_Store
 
 main
+tmp
 
 Config.go
+
+!.gitkeep
